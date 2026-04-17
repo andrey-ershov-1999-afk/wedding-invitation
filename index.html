@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Свадебное приглашение | Живой таймер</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #F5EDE2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            font-family: 'Inter', 'Arial', sans-serif;
+        }
+
+        .invitation {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            background: #FFFCF8;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        .slice {
+            width: 100%;
+            display: block;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ===== ВЕРХНЯЯ ПЛАШКА С ТАЙМЕРОМ ===== */
+        .timer-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .timer-wrapper img {
+            width: 100%;
+            display: block;
+        }
+
+        .timer-card {
+            position: absolute;
+            top: 17%;
+            left: 0;
+            width: 100%;
+            transform: translateY(-50%);
+            background: #523C31;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 5%;
+        }
+
+        .timer-title {
+            font-size: clamp(0.7rem, 4vw, 0.9rem);
+            letter-spacing: 2px;
+            color: #F2E0C9;
+            margin-bottom: 2%;
+        }
+
+        .timer-digits {
+            display: flex;
+            gap: 8%;
+            justify-content: center;
+        }
+
+        .timer-item {
+            text-align: center;
+        }
+
+        .timer-number {
+            font-size: clamp(1.8rem, 8vw, 50px);
+            font-weight: 700;
+            color: #F2E0C9;
+            font-family: monospace;
+        }
+
+        .timer-label {
+            font-size: clamp(0.5rem, 3vw, 0.7rem);
+            color: #DCC29E;
+            text-transform: uppercase;
+        }
+
+        /* ===== КНОПКА (привязана к низу Slice 3 через проценты) ===== */
+        .address-card {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #523C31;
+            text-align: center;
+            box-shadow: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0px;
+            white-space: nowrap;
+            padding: 2% 5%;
+            top: 82%;
+            height: auto;
+            width: 90%;
+            min-width: auto;
+        }
+
+        .address-card a {
+            color: #F2E0C9;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: clamp(0.7rem, 3.5vw, 0.9rem);
+        }
+
+        /* Адаптация для телефонов */
+        @media (max-width: 480px) {
+            .timer-number {
+                font-size: 6vw;
+            }
+            .timer-digits {
+                gap: 5%;
+            }
+            .address-card {
+                top: 85%;
+                width: 85%;
+                padding: 3% 4%;
+            }
+            .address-card a {
+                font-size: 3.5vw;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .address-card {
+                top: 87%;
+                width: 90%;
+                padding: 2% 3%;
+            }
+            .address-card a {
+                font-size: 3vw;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="invitation">
+    <!-- Slice 1 -->
+    <img class="slice" src="Slice 1.png" alt="наконец-то мы женимся">
+    
+    <!-- Slice 2 -->
+    <img class="slice" src="Slice 2.png" alt="приглашение и календарь">
+    
+    <!-- Slice 3 с таймером и кнопкой -->
+    <div class="timer-wrapper">
+        <img src="Slice 3.png" alt="таймер фон">
+        <div class="timer-card">
+            <div class="timer-title">ДО НАШЕЙ ВСТРЕЧИ ОСТАЛОСЬ</div>
+            <div class="timer-digits">
+                <div class="timer-item">
+                    <div class="timer-number" id="days">00</div>
+                    <div class="timer-label">дней</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-number" id="hours">00</div>
+                    <div class="timer-label">часов</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-number" id="minutes">00</div>
+                    <div class="timer-label">минут</div>
+                </div>
+            </div>
+        </div>
+        <!-- Кнопка привязана к низу Slice 3 -->
+        <div class="address-card">
+            <a href="https://go.2gis.com/1XghJ" target="_blank">
+                <i class="fas fa-map-marker-alt"></i> Посмотреть на карте
+            </a>
+        </div>
+    </div>
+    
+    <!-- Slice 4 -->
+    <img class="slice" src="Slice 4.png" alt="адрес фон">
+</div>
+
+<script>
+    function updateTimer() {
+        const weddingDate = new Date(2026, 6, 18, 0, 0, 0);
+        const now = new Date();
+        const diff = weddingDate - now;
+
+        if (diff <= 0) {
+            document.getElementById('days').innerText = '00';
+            document.getElementById('hours').innerText = '00';
+            document.getElementById('minutes').innerText = '00';
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (86400000)) / 3600000);
+        const minutes = Math.floor((diff % 3600000) / 60000);
+
+        document.getElementById('days').innerText = days.toString().padStart(2, '0');
+        document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 60000);
+</script>
+</body>
+</html>
